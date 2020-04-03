@@ -538,17 +538,13 @@
 
 \begin{frame}
   \frametitle{Center-of-Gravity Heuristik}
-  \begin{itemize}
-    \item Systematische Folge von einem \textquote{Center-of-Gravity} zum nächsten
-    \item Jedes \textit{CoG} besitzt eine assoziierte Knotenmenge und eine resultierende Route
-    \item Die Folge schreitet voran, bis ein Abbruchkriterium erfüllt ist
-    \item Die beste generierte Route wird ausgewählt
-  \end{itemize}
+  \textbf{Idee:}
+  Verbesserung der Route durch Einfügen von Knoten mit hohem Score "in der Mitte der Route"\newline
   \textbf{3 Schritte:}
   \begin{enumerate}
     \item Konstruktion der Route
     \item Verbesserung der Route
-    \item Center-of-Gravity
+    \item Iterative Verbesserung durch Centers of Gravity
   \end{enumerate}
   Die ersten beiden Schritte werden verwendet, um eine initiale Route zu generieren.
 \end{frame}
@@ -559,9 +555,7 @@
     \item \textbf{Ziel}:\newline Route generieren, die mit $1$ startet, mit $n$ endet, einen möglichst hohen \textit{profit} besitzt
     und $\leq T_{max}$ Zeit benötigt
     \item \textbf{Einfügeheuristik}:\newline
-      Idee: Knoten einfügen, die einen großen \textit{score} haben und der Route
-      möglichst wenig zusätzliche \textit{travel costs} hinzufügen\newline
-      $\rightarrow$ möglichst große $\frac{P_j}{t_{lj}}$
+      Idee: Ranking für Knoten berechnen: Score, Nähe zum CoG, Nähe zu Start/Endpunkt gehen ein, bester Rank wird gewählt
   \end{itemize}
 \end{frame}
 
@@ -577,19 +571,23 @@
 
 \begin{frame}
   \frametitle{3.) Center-of-Gravity}
-  Angenommen Knoten $i$ besitzt die Koordinaten $x(i), y(i)$\newline
-
+  \textbf{Idee:} Berechne gewichtetes Zentrum der Route.\newline
+  
+  Angenommen, Knoten $i$ besitzt die Koordinaten $x(i), y(i)$\newline
+  
   \textbf{Center of Gravity} $g = (\bar{x}, \bar{y})$ mit:\newline
 
   $\bar{x} = \frac{\sum_{i \in L} P_i x(i)}{\sum_{i \in L} P_i} \quad\quad
   \bar{y} = \frac{\sum_{i \in L} P_i y(i)}{\sum_{i \in L} P_i}$\newline
 
-  Berechne $\frac{P_i}{t_{ig}}$ für $i = 1, 2, ..., n$
+  Berechne $\frac{P_i}{t_{ig}}$ für $i = 1, 2, ..., n$\newline
+  
+  Intuition: Wir wollen profitable Knoten, die nah am CoG liegen.
 \end{frame}
 
 \begin{frame}
   \frametitle{3.) Center-of-Gravity}
-  \textbf{Anschließend wird eine Route wie folgt generiert}:
+  \textbf{Anschließend wird die Route wie folgt verbessert:}
   \begin{itemize}  
     \item \textit{Cheapest-Insertion} in abst. Reihenfolge $\frac{P_i}{t_{ig}}$ solange $T_{max}$ eingehalten wird
     \item Erneute Verbesserung der Route (Schritt 2)
@@ -597,7 +595,7 @@
   \textbf{Bestimmung einer Lösung}:
   \begin{itemize}
     \item Wiederholter Center-of-Gravity-Schritt für Lösungsroute
-    \item Iterativer Prozess, bis dieselbe Route erneut entsteht
+    \item Iterativer Prozess, bis Konvergenz erreicht ist
     \item Beste generierte Route wird ausgewählt
   \end{itemize}
 \end{frame}
