@@ -223,7 +223,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Subtour Elimination}
+  \frametitle{Subtour-Elimination}
   \begin{itemize}
     \item $N = \{1, 2, 3, 4, 5\}$
     \item Ohne NB $(4)$ und $(5)$ wären kombinierte Routen möglich, z.B.\newline
@@ -240,8 +240,7 @@
 
 \begin{frame}
   \frametitle{Profitable Tour Problem (\textsc{PTP})}
-
-      \begin{figure}[H]
+    \begin{figure}[H]
       \begin{subfigure}[b]{0.45\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.6, transform shape, node distance=1.75cm]
@@ -250,7 +249,6 @@
           \node[state] (E) [thick, below right = 1.75cm of A] {$\boldsymbol{E_4}$};
           \node[state] (C) [thick, right = 1.75cm of B] {$\boldsymbol{C_8}$};
           \node[state] (D) [thick, right = 1.75cm of E] {$\boldsymbol{D_1}$};
-
           \path
             (A) edge [thick, above left] node {$3$} (B)
             (A) edge [thick, above right, near end] node {$6$} (C)
@@ -274,16 +272,15 @@
         \node[state] (E) [thick, below right = 1.75cm of A] {$\boldsymbol{E_4}$};
         \node[state] (C) [thick, right = 1.75cm of B] {$\boldsymbol{C_8}$};
         \node[state] (D) [thick, right = 1.75cm of E] {$\boldsymbol{D_1}$};
-
         \path
           (A) edge [thick, above left] node {$3$} (B)
           (A) edge [thick, below left] node {$3$} (E)
           (B) edge [thick, above] node {$4$} (C)
           (C) edge [thick, above left, near start] node {$5$} (E);
-    \end{tikzpicture}
+      \end{tikzpicture}
       \caption*{\textsc{optimale PTP Lösung}}
       \end{subfigure}
-      \end{figure}
+    \end{figure}
 \end{frame}
 
 %------------------------------------------------
@@ -434,8 +431,8 @@
           \node[state] (E) [thick, below right = 1.75cm of A] {$\boldsymbol{E_4}$};
           \node[state] (C) [thick, right = 1.75cm of B] {$\boldsymbol{C_8}$};
           \node[state] (D) [thick, right = 1.75cm of E] {$\boldsymbol{D_1}$};
-  
-          \path          
+
+          \path
             (A) edge [thick, above left] node {$3$} (B)
             (A) edge [thick, above right, near end] node {$6$} (C)
             (A) edge [thick, above left, near start] node {$6$} (D)
@@ -459,7 +456,7 @@
         \node[state] (C) [thick, right = 1.75cm of B] {$\boldsymbol{C_8}$};
         \node[state] (D) [thick, right = 1.75cm of E] {$\boldsymbol{D_1}$};
 
-        \path          
+        \path
         (A) edge [thick, above left] node {$3$} (B)
             (A) edge [thick, below left] node {$3$} (E)
             (B) edge [thick, above] node {$4$} (C)
@@ -468,6 +465,22 @@
       \caption*{\textsc{optimale \textsc{OP} Lösung}}
       \end{subfigure}
       \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{OP Praktische Anwendung}
+  \centering
+  \includegraphics[width=0.5\textwidth]{img/POI.png}
+  \begin{itemize}
+    \item Geg. Anzahl von POIs (\textquote{Points of Interest})
+    \item Jeder POI besitzt einen pers. Profit für einen Touristen (\textquote{Satisfaction-Wert})
+    \item OP:
+    \begin{itemize}
+      \item Selektiere beste Teilmgenge der POIs
+      \item Bestimme Besuchsreihenfolge
+      \item Berücksichtige limitierte Zeit des Touristen
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
 %------------------------------------------------
@@ -684,7 +697,7 @@
       \item \textsc{RANDOM SEQUENCE REMOVE}
       \item \textsc{RANDOM CLUSTER REMOVE}
     \end{itemize}
-    \item \textbf{repair}: 
+    \item \textbf{repair}:
     \begin{itemize}
       \item \textsc{GREEDY REPAIR}
       \item \textsc{RANDOM REPAIR}
