@@ -169,6 +169,17 @@
 %------------------------------------------------
 
 \begin{frame}
+  \frametitle{Single Vehicle Routing Problems with Profits}
+  \textbf{Input:}
+  \begin{itemize}
+    \item $G = (N, A)$
+    \item \textbf{Knoten} $i \in N = \{1, ..., |N|\}$ mit $P_i \geq 0$
+    \item \textbf{Startknoten} $1$, \textbf{Endknoten} $|N|$ ($P_1 = P_{|N|} = 0)$
+    \item \textbf{Kosten} $t_{ij} \in A, t_{ij} \geq 0$ zwischen Knoten $i$ und $j$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
 \frametitle{Single Vehicle Routing Problems with Profits}
 \begin{itemize}
   \item \textbf{3 Varianten}: \textsc{PTP}, \textsc{PCTSP}, \textsc{OP}
@@ -187,21 +198,11 @@
 \begin{itemize}
   \item Zielfunktion kombiniert \textit{profit} und \textit{travel costs}:\newline
   $max$ (\textit{profit} $-$ \textit{travel costs})
-  \item Besuche Teilmenge der Knoten, die die Differenz aus Gesamtprofit und Gesamtkosten maximiert
+  \item \textbf{Ziel}: Bestimme Route, die bei Knoten $1$ startet und bei Knoten $|N|$ endet, die eine Teilmenge von $N$
+  enthält und die Differenz aus Gesamtprofit und Gesamtkosten maximiert
   \item Route einer optimalen Lösung entspricht \textsc{TSP}-Route für die ausgewählten Knoten
   \item NP-schwer
 \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Profitable Tour Problem (\textsc{PTP})}
-  \begin{itemize}
-    \item \textbf{Knoten} $i \in N = \{1, ..., |N|\}$ mit $P_i \geq 0$
-    \item \textbf{Startknoten} $1$, \textbf{Endknoten} $|N|$ ($P_1 = P_{|N|} = 0)$
-    \item \textbf{Kosten} $t_{ij} \geq 0$ zwischen Knoten $i$ und $j$
-    \item \textbf{Ziel}: Bestimme Route, die bei Knoten $1$ startet und bei Knoten $|N|$ endet, die eine Teilmenge von $N$
-    enthält und die Differenz aus Gesamtprofit und Gesamtkosten maximiert
-  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -292,30 +293,19 @@
 \begin{frame}
 \frametitle{Prize-Collecting \textsc{TSP} (\textsc{PCTSP})}
 \begin{itemize}
-  \item Zielfunktion minimiert \textit{travel costs}
-  \item Minimalprofit als Nebenbedingung gegeben
-  \item Unterschied zum \textsc{TSP}:
+  \item \textbf{Ziel}:\newline Bestimme Route, die eine Teilmenge aus $N$ mit Profit $\geq P_{min}$ enthält
+  und die Gesamtkosten minimiert
+  \item \textbf{Unterschied zum \textsc{TSP}}:
   \begin{itemize}
     \item Nicht alle Knoten müssen besucht werden
     \item Minimaler \textit{profit} muss erreicht werden
   \end{itemize}
-  \item Unterschied zum \textsc{PTP}:
+  \item \textbf{Unterschied zum \textsc{PTP}}:
   \begin{itemize}
     \item \textit{profit} als Nebenbedingung, nicht als Teil der Zielfunktion
   \end{itemize}
   \item NP-schwer
 \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Prize-Collecting \textsc{TSP} (\textsc{PCTSP})}
-  \begin{itemize}
-    \item \textbf{Knoten} $i \in N = \{1, ..., |N|\}$ mit $P_i \geq 0$
-    \item \textbf{Startknoten} $1$, \textbf{Endknoten} $|N|$ ($P_1 = P_{|N|} = 0)$
-    \item \textbf{Kosten} $t_{ij} \geq 0$ zwischen Knoten $i$ und $j$
-    \item \textbf{Ziel}: Bestimme Route, die eine Teilmenge aus $N$ mit Profit $\geq P_{min}$ enthält
-    und die Gesamtkosten minimiert
-  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -350,8 +340,8 @@
           \node[state] (E) [thick, below right = 1.75cm of A] {$\boldsymbol{E_4}$};
           \node[state] (C) [thick, right = 1.75cm of B] {$\boldsymbol{C_8}$};
           \node[state] (D) [thick, right = 1.75cm of E] {$\boldsymbol{D_1}$};
-  
-          \path          
+
+          \path
             (A) edge [thick, above left] node {$3$} (B)
             (A) edge [thick, above right, near end] node {$6$} (C)
             (A) edge [thick, above left, near start] node {$6$} (D)
@@ -375,7 +365,7 @@
         \node[state] (C) [thick, right = 1.75cm of B] {$\boldsymbol{C_8}$};
         \node[state] (D) [thick, right = 1.75cm of E] {$\boldsymbol{D_1}$};
 
-        \path          
+        \path
         (A) edge [thick, above left] node {$3$} (B)
         (A) edge [thick, above right, near end] node {$6$} (C)
         (B) edge [thick, above] node {$4$} (C);
@@ -392,35 +382,24 @@
 \begin{frame}
 \frametitle{Orienteering Problem (\textsc{OP})}
 \begin{itemize}
-  \item Zielfunktion maximiert \textit{profit}
-  \item Maximale \textit{travel costs} als Nebenbedingung
+  \item \textbf{Ziel}:\newline Bestimme Route, die eine Teilmenge von $N$ enthält, durch $T_{max}$ limitiert ist
+  und den Gesamtprofit maximiert
   \item Integriert Komplexität aus \textsc{Knapsack} und \textsc{TSP} \textrightarrow NP-schwer
-  \item Unterschied zum \textsc{TSP}:
+  \item \textbf{Unterschied zum \textsc{TSP}}:
   \begin{itemize}
     \item Nicht alle Knoten müssen besucht werden
     \item Kosten sind nicht Teil der Zielfunktion
     \item Maximalkosten als Nebenbedingung
   \end{itemize}
-  \item Unterschied zum \textsc{PTP}: 
+  \item \textbf{Unterschied zum \textsc{PTP}}:
   \begin{itemize}
     \item Kosten als Nebenbedingung, nicht als Teil der Zielfunktion
   \end{itemize}
-  \item Unterschied zum \textsc{PCTSP}:
+  \item \textbf{Unterschied zum \textsc{PCTSP}}:
   \begin{itemize}
     \item \textit{travel costs} und \textit{profit} tauschen \textquote{Rollen}
   \end{itemize}
 \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Orienteering Problem (\textsc{OP})}
-  \begin{itemize}
-    \item \textbf{Knoten} $i \in N = \{1, ..., |N|\}$ mit $P_i \geq 0$
-    \item \textbf{Startknoten} $1$, \textbf{Endknoten} $|N|$ ($P_1 = P_{|N|} = 0)$
-    \item \textbf{Kosten} $t_{ij} \geq 0$ zwischen Knoten $i$ und $j$
-    \item \textbf{Ziel}: Bestimme Route, die eine Teilmenge von $N$ enthält, durch $T_{max}$ limitiert ist
-    und den Gesamtprofit maximiert
-  \end{itemize}
 \end{frame}
 
 \begin{frame}
