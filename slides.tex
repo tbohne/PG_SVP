@@ -222,6 +222,22 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Subtour Elimination}
+  \begin{itemize}
+    \item $N = \{1, 2, 3, 4, 5\}$
+    \item Ohne NB $(4)$ und $(5)$ wären kombinierte Routen möglich, z.B.\newline
+    $1-5-1$ und $2-3-4-2$
+    \item Maßnahme: $x_{ij} = 1 \implies u_j \geq u_i + 1$
+    \item Übersetzt in lineare NB: $u_i - u_j + 1 \leq (|N| - 1)(1 - x_{ij}) \quad \forall i, j = 2, ..., |N|$
+    \item Test:
+    \begin{itemize}
+      \item $x_{ij} = 1: \quad u_i + 1 \leq u_j$ \checkmark
+      \item $x_{ij} = 0: \quad u_i - u_j \leq |N| - 2$ \checkmark
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
   \frametitle{Profitable Tour Problem (\textsc{PTP})}
 
       \begin{figure}[H]
@@ -233,8 +249,8 @@
           \node[state] (E) [thick, below right = 1.75cm of A] {$\boldsymbol{E_4}$};
           \node[state] (C) [thick, right = 1.75cm of B] {$\boldsymbol{C_8}$};
           \node[state] (D) [thick, right = 1.75cm of E] {$\boldsymbol{D_1}$};
-  
-          \path          
+
+          \path
             (A) edge [thick, above left] node {$3$} (B)
             (A) edge [thick, above right, near end] node {$6$} (C)
             (A) edge [thick, above left, near start] node {$6$} (D)
@@ -258,7 +274,7 @@
         \node[state] (C) [thick, right = 1.75cm of B] {$\boldsymbol{C_8}$};
         \node[state] (D) [thick, right = 1.75cm of E] {$\boldsymbol{D_1}$};
 
-        \path          
+        \path
           (A) edge [thick, above left] node {$3$} (B)
           (A) edge [thick, below left] node {$3$} (E)
           (B) edge [thick, above] node {$4$} (C)
@@ -278,7 +294,7 @@
 \begin{itemize}
   \item Zielfunktion minimiert \textit{travel costs}
   \item Minimalprofit als Nebenbedingung gegeben
-  \item Unterschied zum \textsc{TSP}: 
+  \item Unterschied zum \textsc{TSP}:
   \begin{itemize}
     \item Nicht alle Knoten müssen besucht werden
     \item Minimaler \textit{profit} muss erreicht werden
@@ -484,7 +500,7 @@
   \textbf{exakt:}
   \begin{itemize}
     \item LP-Solver (CPLEX, Gurobi)
-    \item Branch-and-Cut Algorithmus (TODO: Paper suchen)
+    \item Branch-and-Cut Algorithmus
   \end{itemize}
   \textbf{heuristisch:}
   \begin{itemize}
@@ -539,12 +555,13 @@
 \begin{frame}
   \frametitle{Center-of-Gravity Heuristik}
   \textbf{Idee:}
-  Verbesserung der Route durch Einfügen von Knoten mit hohem Score "in der Mitte der Route"\newline
+  Verbesserung der Route durch Einfügen von Knoten mit hohem Score \textquote{in der Mitte der Route}\
+
   \textbf{3 Schritte:}
   \begin{enumerate}
     \item Konstruktion der Route
     \item Verbesserung der Route
-    \item Iterative Verbesserung durch Centers of Gravity
+    \item Iterative Verbesserung durch Center-of-Gravity-Verfahren
   \end{enumerate}
   Die ersten beiden Schritte werden verwendet, um eine initiale Route zu generieren.
 \end{frame}
@@ -555,7 +572,9 @@
     \item \textbf{Ziel}:\newline Route generieren, die mit $1$ startet, mit $n$ endet, einen möglichst hohen \textit{profit} besitzt
     und $\leq T_{max}$ Zeit benötigt
     \item \textbf{Einfügeheuristik}:\newline
-      Idee: Ranking für Knoten berechnen: Score, Nähe zum CoG, Nähe zu Start/Endpunkt gehen ein, bester Rank wird gewählt
+    Idee: Knoten einfügen, die einen großen \textit{score} haben und der Route
+    möglichst wenig zusätzliche \textit{travel costs} hinzufügen\newline
+    $\rightarrow$ möglichst große $\frac{P_j}{t_{lj}}$
   \end{itemize}
 \end{frame}
 
@@ -572,23 +591,23 @@
 \begin{frame}
   \frametitle{3.) Center-of-Gravity}
   \textbf{Idee:} Berechne gewichtetes Zentrum der Route.\newline
-  
+
   Angenommen, Knoten $i$ besitzt die Koordinaten $x(i), y(i)$\newline
-  
+
   \textbf{Center of Gravity} $g = (\bar{x}, \bar{y})$ mit:\newline
 
   $\bar{x} = \frac{\sum_{i \in L} P_i x(i)}{\sum_{i \in L} P_i} \quad\quad
   \bar{y} = \frac{\sum_{i \in L} P_i y(i)}{\sum_{i \in L} P_i}$\newline
 
   Berechne $\frac{P_i}{t_{ig}}$ für $i = 1, 2, ..., n$\newline
-  
+
   Intuition: Wir wollen profitable Knoten, die nah am CoG liegen.
 \end{frame}
 
 \begin{frame}
   \frametitle{3.) Center-of-Gravity}
   \textbf{Anschließend wird die Route wie folgt verbessert:}
-  \begin{itemize}  
+  \begin{itemize}
     \item \textit{Cheapest-Insertion} in abst. Reihenfolge $\frac{P_i}{t_{ig}}$ solange $T_{max}$ eingehalten wird
     \item Erneute Verbesserung der Route (Schritt 2)
   \end{itemize}
