@@ -496,9 +496,10 @@
   \end{itemize}
   \textbf{heuristisch:}
   \begin{itemize}
-    \item Tsiligirides' S-/D- + RI-Algorithmus
-    \item Center-of-Gravity Heuristik
-    \item Lokale Suche / Metaheuristiken
+    \item \textbf{Tsiligirides' S-}/D- + \textbf{RI-Algorithmus}
+    \item \textbf{Center-of-Gravity Heuristik}
+    \item Lokale Suche
+    \item Metaheuristiken (\textbf{PSO, ALNS})
   \end{itemize}
 \end{frame}
 
@@ -509,27 +510,15 @@
     von denen schließlich die beste ausgewählt wird
     \item \textbf{Kernidee}: Maß der \textquote{desirability} $A(j) = \frac{P_j}{t_{lj}}$ sämtlicher Knoten
     \item $4$ Knoten mit der größten $A(j)$ werden bestimmt, von denen zufällig ein Knoten gewählt wird ($4$ experimentell best.)
-    \item Iterativer Prozess
     \item Abbruchkriterium: Keine verbleibende Zeit für weitere Knoten
   \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Tsiligirides' D-Algorithmus}
-  \begin{itemize}
-    \item Konstruiert Route unter Verwendung einer Variante der Wren-Holiday-Vehicle-Routing-Procedure
-    \item Teilt die Karte in Sektoren (def. durch $2$ konzentrische Kreise und einen Bogen fester Länge)
-    \item Routen werden innerhalb der Sektoren aufgebaut um die \textit{total travel time} zu minimieren
-    \item Durch Variieren der Radien der Sektoren und Rotation der Achsen, werden $48$ Fälle für jeden $T_{max}$-Wert betrachtet
-  \end{itemize}
-  \includegraphics[width=0.2\textwidth]{img/d_algo.png}
 \end{frame}
 
 \begin{frame}
   \frametitle{Tsiligirides' Route-Improvement Algorithmus (RI)}
   \begin{itemize}
     \item Verbesserungsverfahren für initiale Routen (aus S-/D-Algorithmus)
-    \item \textbf{3 Schritte}:
+    \item \textbf{3 mögliche Verbesserungsverfahren}:
     \begin{itemize}
       \item Tausche Position zweier Knoten innerhalb der Route
       \begin{itemize}
@@ -555,18 +544,14 @@
     \item Verbesserung der Route
     \item Iterative Verbesserung durch Center-of-Gravity-Verfahren
   \end{enumerate}
-  Die ersten beiden Schritte werden verwendet, um eine initiale Route zu generieren.
 \end{frame}
 
 \begin{frame}
   \frametitle{1.) Konstruktion der Route}
   \begin{itemize}
-    \item \textbf{Ziel}:\newline Route generieren, die mit $1$ startet, mit $n$ endet, einen möglichst hohen \textit{profit} besitzt
-    und $\leq T_{max}$ Zeit benötigt
-    \item \textbf{Einfügeheuristik}:\newline
-    Idee: Knoten einfügen, die einen großen \textit{score} haben und der Route
-    möglichst wenig zusätzliche \textit{travel costs} hinzufügen\newline
+    \item \textbf{Idee}: Knoten einfügen, die einen großen \textit{score} haben und der Route möglichst wenig zusätzliche \textit{travel costs} hinzufügen\newline
     $\rightarrow$ möglichst große $\frac{P_j}{t_{lj}}$
+    \item (genau wie MC-Verfahren im S-Algorithmus, aber wir wählen deterministisch immer \textit{den besten} Nachfolgerknoten)
   \end{itemize}
 \end{frame}
 
@@ -612,46 +597,28 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Local Search Moves}
-  \textbf{$2$ Arten: Moves, die...}
-  \begin{itemize}
-    \item ... die \textit{travel costs} für eine Teilmenge der Knoten verringern
-    \item ... den \textit{profit} durch eine verbesserte Knotenauswahl erhöhen
-  \end{itemize}
-  Die Operatoren sollten nur angewandt werden, wenn die Route verbessert und weiterhin zulässig ist.
-\end{frame}
-
-\begin{frame}
-  \frametitle{Local Search Moves}
-  \textbf{Verringerung der \textit{travel costs}:}
-  \begin{itemize}
-    \item \textsc{SWAP}: Tausche zwei Knoten innerhalb einer Route
-    \item \textsc{RELOCATE}: Ändere Pos. eines Knotens in einer Route
-    \item \textsc{2-OPT}: Ersetze zwei Kanten einer Route durch zwei andere
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Local Search Moves}
-  \textbf{Steigerung des \textit{profits}:}
-  \begin{itemize}
-    \item \textsc{INSERT}: Füge der Route einen neuen Knoten hinzu (\textit{Cheapest-Insertion})
-    \item \textsc{REPLACE}: Ersetze einen Knoten der Route durch einen nicht besuchten Knoten mit größerem \textit{profit}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
   \frametitle{Particle Swarm Optimization (PSO)}
   \begin{itemize}
-    \item Populations-basierter stochastischer Optimierungsalgorithmus
-    \item Inspiriert durch intelligentes kollektives Verhalten best. Tiere
-    \item Kooperative Art, Futter zu finden (Zielfkt. zu optimieren)
-    \item Balance zwischen \textit{Exploration} und \textit{Exploitation}
+    \item Population aus Lösungen die sich verhält wie ein Schwarm
+    \item inspiriert durch intelligentes Schwarmverhalten von Tieren
+    \item jeder Partikel im d-dimensionalen Lösungsraum ist definiert durch Position und Geschwindigkeit (jeweils d-dimensionale Vektoren)
   \end{itemize}
   \begin{figure}
     \centering
     \includegraphics[width=0.75\textwidth]{img/birds.jpg}
   \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Particle Swarm Optimization (PSO)}
+  \begin{itemize}
+  \item initialer Schwarm wird zufällig erzeugt (z.B. S-Algorithmus)
+  \item in jedem Schritt aktualisiert jeder Partikel seine Position: \[p_i^{t} = p_i^{t-1} + v_i^{t-1} \]
+  \item ... und seine Geschwindigkeit:
+  \[ v_i^{t} = w v_i^{t-1} + c_1r_1(pbest_i^{t-1} - p_i^{t-1}) + c_2r_2(gbest^{t-1} - p_i^{t-1})\]
+  
+  
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -663,41 +630,54 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Particle Swarm Optimization (PSO)}
-  \textbf{Nachteile}:
+  \frametitle{Adaptive Large Neighborhood Search (ALNS)}
+  \centering
+  \begin{figure}
+    \includegraphics[width=0.6\textwidth]{img/clustering_motivation.png}
+  \end{figure}
+  Intuition: Wenn wir einen sehr profitablen Knoten hinzufügen wollen, lohnt es sich wahrscheinlich auch, Knoten aus seiner Nachbarschaft aufzunehmen.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Adaptive Large Neighborhood Search (ALNS)}
+  \centering
+  \begin{figure}
+    \includegraphics[width=0.5\textwidth]{img/clusters.png}
+  \end{figure}
   \begin{itemize}
-    \item \textquote{Premature Convergence}
-    \item Fehlende Intensivierung um lokale Optima
-  \end{itemize}
-  \textbf{Maßnahmen zur Verbesserung}:
-  \begin{itemize}
-    \item Geschwindigkeit der wegweisenden Partikel wird zufällig aktualisiert \textrightarrow verbessert
-    \textquote{Exploration} und verhindert \textquote{Premature Convergence}
-    \item Verbesserung der \textquote{Exploitation-Fähigkeit} der wegweisenden Partikel durch RVNS
+      \item Idee: verwende (parameterlosen) Clusteringalgorithmus, um Cluster zu finden
+      \item DBSCAN von Ester, Kriegel, Sander and Xu (1996)
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Adaptive Large Neighborhood Search (ALNS)}
-  \textbf{Initiale Lösung}:
+  \textbf{Allgemeines Prinzip}:
   \begin{itemize}
-    \item Clustering nah beieinander liegender Knoten (\textsc{DBSCAN})
-    \item Knoten werden randomisiert nacheinander in die Route einfügt solange keine NB verletzt wird
-    \item Knoten desselben Clusters werden mit höherer Wahrscheinlichkeit ausgewählt
+    \item wähle Set von Repair- und Destroy-Operationen
+    \item finde initiale Lösung \textit{x} = optimale Lösung \textit{x*}
+    \item for N iterations:
+    \begin{itemize}
+        \item wähle Destroy-Operation \textit{D}
+        \item wähle Repair-Operation \textit{R}
+        \item erzeuge neue Lösung x' = \textit{R(D(x))}
+        \item falls \textit{x'} besser als \textit{x*: x* = x'}
+        \item aktualisiere Wahrscheinlichkeiten für \textit{R} und \textit{D}
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Adaptive Large Neighborhood Search (ALNS)}
-  \textbf{Verbesserung der Lösung}:
+  \textbf{Details für OP:}
   \begin{itemize}
-    \item \textbf{destroy}:
+    \item \textbf{destroy-Operationen:}
     \begin{itemize}
       \item \textsc{RANDOM REMOVE}
       \item \textsc{RANDOM SEQUENCE REMOVE}
       \item \textsc{RANDOM CLUSTER REMOVE}
     \end{itemize}
-    \item \textbf{repair}:
+    \item \textbf{repair-Operationen:}
     \begin{itemize}
       \item \textsc{GREEDY REPAIR}
       \item \textsc{RANDOM REPAIR}
@@ -705,6 +685,14 @@
       \item \textsc{CLUSTER REPAIR}
     \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Geschafft!}
+  \textbf{Danke für eure Aufmerksamkeit!}
+  \newline
+  \newline
+  \textbf{Gibt es noch Fragen?}
 \end{frame}
 
 \end{document}
