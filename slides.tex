@@ -549,9 +549,14 @@
 \begin{frame}
   \frametitle{1.) Konstruktion der Route}
   \begin{itemize}
-    \item \textbf{Idee}: Knoten einfügen, die einen großen \textit{score} haben und der Route möglichst wenig zusätzliche \textit{travel costs} hinzufügen\newline
-    $\rightarrow$ möglichst große $\frac{P_j}{t_{lj}}$
-    \item (genau wie MC-Verfahren im S-Algorithmus, aber wir wählen deterministisch immer \textit{den besten} Nachfolgerknoten)
+    \item \textbf{Idee}: Knoten einfügen, die ...
+    \begin{itemize}
+        \item ... möglichst großen Profit haben
+        \item ... möglichst nah am Center of Gravity der Route liegen
+        \item ... möglichst nah an Start- und Endpunkt der Route liegen
+    \end{itemize}
+    \item daher Insertion-Verfahren mithilfe von gewichtetem Ranking dieser drei Faktoren
+    \item 22 verschiedene Gewichtungen werden ausprobiert, beste Route wird an den nächsten Schritt weitergegeben
   \end{itemize}
 \end{frame}
 
@@ -567,23 +572,23 @@
 
 \begin{frame}
   \frametitle{3.) Center-of-Gravity}
-  \textbf{Idee:} Berechne gewichtetes Zentrum der Route.\newline
+  \textbf{Idee:} Wir wissen jetzt \textquote{wo in etwa eine Route lang laufen muss} und berechnen eine neue Route, die sich am CoG der alten Route orientiert.
 
   Angenommen, Knoten $i$ besitzt die Koordinaten $x(i), y(i)$\newline
-
+  
   \textbf{Center of Gravity} $g = (\bar{x}, \bar{y})$ mit:\newline
 
   $\bar{x} = \frac{\sum_{i \in L} P_i x(i)}{\sum_{i \in L} P_i} \quad\quad
   \bar{y} = \frac{\sum_{i \in L} P_i y(i)}{\sum_{i \in L} P_i}$\newline
 
   Berechne $\frac{P_i}{t_{ig}}$ für $i = 1, 2, ..., n$\newline
-
+  
   Intuition: Wir wollen profitable Knoten, die nah am CoG liegen.
 \end{frame}
 
 \begin{frame}
   \frametitle{3.) Center-of-Gravity}
-  \textbf{Anschließend wird die Route wie folgt verbessert:}
+  \textbf{Anschließend wird die neue Route wie folgt generiert:}
   \begin{itemize}
     \item \textit{Cheapest-Insertion} in abst. Reihenfolge $\frac{P_i}{t_{ig}}$ solange $T_{max}$ eingehalten wird
     \item Erneute Verbesserung der Route (Schritt 2)
